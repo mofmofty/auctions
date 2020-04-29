@@ -16,6 +16,11 @@
         </td>
     </tr>
     <tr>
+        <th scope="row">商品詳細情報</th>
+        <td><?= h($biditem->details) ?>
+        </td>
+    </tr>
+    <tr>
         <th scope="row">終了時間</th>
         <td><?= h($biditem->endtime) ?>
         </td>

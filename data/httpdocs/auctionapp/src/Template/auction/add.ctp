@@ -8,6 +8,7 @@
     echo $this->Form->control('name');
     echo $this->Form->hidden('finished', ['value' => 0]);
     echo $this->Form->control('endtime');
+    echo $this->Form->control('details'); //商品の詳細情報欄の追加
     ?>
 </fieldset>
 <?= $this->Form->button(__('Submit')) ?>

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -71,6 +72,13 @@ class BiditemsTable extends Table
             ->maxLength('name', 100)
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
+
+        //商品詳細情報欄のバリデーションを追加
+        $validator
+            ->scalar('details')
+            ->maxLength('details', 500)
+            ->requirePresence('details', 'create')
+            ->notEmptyString('details');
 
         $validator
             ->boolean('finished')
