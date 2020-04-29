@@ -1,0 +1,149 @@
+version: '3'
+
+# Service definition
+services:
+
+  mysql:
+    # Dockerfile
+    build: ./mysql
+    # Image Name
+    # image: yoshi0518/cakephp-mysql:8.0.19
+    image: cakephp-mysql:8.0.19
+    # Container Name
+    container_name: cakephp-mysql
+    # Environment
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: sample
+      MYSQL_USER: cakephp
+      MYSQL_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    # Mount host directory(host:container)
+    volumes:
+      - ./data/share/mysql:/share
+      - ./data/config/mysql/my.cnf:/etc/my.cnf
+      - ./data/db:/var/lib/mysql
+      - ./data/sql:/docker-entrypoint-initdb.d
+    # Port forwarding(host:container)
+    ports:
+      - 3306:3306
+    # Restart
+    restart: always
+
+  phpfpm:
+    # Dockerfile
+    build: ./phpfpm
+    # Image Name
+    # image: yoshi0518/cakephp-phpfpm:7.4.3
+    image: cakephp-phpfpm:7.4.3
+    # Container Name
+    container_name: cakephp-phpfpm
+    # Environment
+    environment:
+      TZ: 'Asia/Tokyo'
+    # Mount host directory(host:container)
+    volumes:
+      - ./data/share/phpfpm:/share
+      - ./data/config/php/php.ini:/usr/local/etc/php/php.ini
+      - ./data/httpdocs:/var/www/html
+    # Container dependencies
+    depends_on:
+      - mysql
+    # Connect a container to another container
+    links:
+      - mysql
+    # Restart
+    restart: always
+
+  nginx:
+    # Dockerfile
+    build: ./nginx
+    # Image Name
+    # image: yoshi0518/cakephp-nginx:1.17.8
+    image: cakephp-nginx:1.17.8
+    # Container Name
+    container_name: cakephp-nginx
+    # Environment
+    environment:
+      TZ: 'Asia/Tokyo'
+    # Mount host directory(host:container)
+    volumes:
+      - ./data/share/nginx:/share
+      - ./data/config/nginx:/etc/nginx
+      - ./data/httpdocs:/var/www/html
+    # Port forwarding(host:container)
+    ports:
+      - 80:80
+      - 443:443
+    # Container dependencies
+    depends_on:
+      - phpfpm
+    # Connect a container to another container
+    links:
+      - phpfpm
+    # Restart
+    restart: always
+
+  host:
+    # Dockerfile
+    build: ./host
+    # Image Name
+    # image: yoshi0518/cakephp-host:7.4.3
+    image: cakephp-host:7.4.3
+    # Container Name
+    container_name: cakephp-host
+    # Environment
+    environment:
+      TZ: "Asia/Tokyo"
+      PRJ_NAME: "auctionapp"
+    # Mount host directory(host:container)
+    volumes:
+      - ./data/share/host:/share
+      - ./data/config/php/php.ini:/usr/local/etc/php/php.ini
+      - ./data/httpdocs:/projects
+    # Port forwarding(host:container)
+    ports:
+      - "8765:80"
+    # Container dependencies
+    depends_on:
+      - mysql
+      - phpfpm
+    # Connect a container to another container
+    links:
+      - mysql
+      - phpfpm
+    # Restart
+    restart: always
+
+  phpmyadmin:
+    # Dockerfile
+    build: ./phpmyadmin
+    # Image Name
+    # image: yoshi0518/cakephp-phpmyadmin:5.0.1
+    image: cakephp-phpmyadmin:5.0.1
+    # Container Name
+    container_name: cakephp-phpmyadmin
+    # Environment
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOSTS: cakephp-mysql
+      PMA_USER: root
+      PMA_PASSWORD: password
+    # Mount host directory(host:container)
+    volumes:
+      - ./data/share/phpmyadmin:/share
+    # Port forwarding(host:container)
+    ports:
+      - 8080:80
+    # Container dependencies
+    depends_on:
+      - mysql
+      - phpfpm
+      - nginx
+    # Connect a container to another container
+    links:
+      - mysql
+      - phpfpm
+      - nginx
+    # Restart
+    restart: always
