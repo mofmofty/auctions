@@ -12,7 +12,7 @@ Development of mini-auction site
 - phpMyAdmin 5.0.1
 
 ## Access
-mini-auctions
+Mini-auction Site
 
 http://localhost:8765/users/
 
