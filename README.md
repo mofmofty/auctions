@@ -11,7 +11,7 @@ Development of mini-auction site
 - CakePHP 3.8.10
 - phpMyAdmin 5.0.1
 
-## Access
+## URL
 Mini-auction Site
 
 http://localhost:8765/users/
