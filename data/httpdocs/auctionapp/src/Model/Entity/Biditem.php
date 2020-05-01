@@ -35,6 +35,7 @@ class Biditem extends Entity
         'details' => true, //商品詳細情報欄の関連付けを追加
         'finished' => true,
         'endtime' => true,
+        'image' => true, //画像アップロード追加
         'created' => true,
         'user' => true,
         'bidinfo' => true,

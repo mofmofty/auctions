@@ -63,6 +63,9 @@ class BiditemsTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
+
+        $validator->provider('customValidate', 'App\Model\Validation\CustomValidation');
+
         $validator
             ->integer('id')
             ->allowEmptyString('id', null, 'create');
@@ -73,7 +76,7 @@ class BiditemsTable extends Table
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
 
-        //商品詳細情報欄のバリデーションを追加
+        //商品詳細情報欄のバリデーション
         $validator
             ->scalar('details')
             ->maxLength('details', 500)
@@ -89,6 +92,19 @@ class BiditemsTable extends Table
             ->dateTime('endtime')
             ->requirePresence('endtime', 'create')
             ->notEmptyDateTime('endtime');
+
+        //画像ファイルアップロードのバリデーション
+        $validator
+            ->add('image', 'isImage', [
+                'provider' => 'customValidate',
+                'rule' => 'isImage',
+                'message' => '「PNG」「JPG」「GIF」ファイルのみアップロード可能です',
+            ])
+            ->add('image', 'limitFileSize', [
+                'provider' => 'customValidate',
+                'rule' => 'limitFileSize',
+                'message' => 'ファイルサイズは「5MB」以内にしてください',
+            ]);
 
         return $validator;
     }

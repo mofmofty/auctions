@@ -21,6 +21,10 @@
         </td>
     </tr>
     <tr>
+        <th scope="row"></th>
+        <td><?= $this->Html->image($biditem->image, array('height' => 200, 'width' => 200, 'alt' => h($biditem->image))) ?></td>
+    </tr>
+    <tr>
         <th scope="row">終了時間</th>
         <td><?= h($biditem->endtime) ?>
         </td>

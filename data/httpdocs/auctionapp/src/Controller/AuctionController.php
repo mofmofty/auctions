@@ -4,9 +4,18 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+use Cake\Filesystem\Folder;
+use Cake\Filesystem\File;
+
 use Cake\Event\Event;
 use Exception;
 use PhpParser\Node\Expr\FuncCall;
+use RuntimeException;
+
+use Cake\Datasource\ConnectionManager;
+use Cake\Core\Configure;
+
+use Cake\Log\Log;
 
 class AuctionController extends AuctionBaseController
 {
@@ -90,22 +99,57 @@ class AuctionController extends AuctionBaseController
     {
         //Biditemインスタンスを用意
         $biditem = $this->Biditems->newEntity();
-        //POST送信時の処理
+        //POST送信時の処理kj
         if ($this->request->is('post')) {
+
             //$biditemにフォームの送信内容を反映
             $biditem = $this->Biditems->patchEntity($biditem, $this->request->getData());
-            //$biditemを保存する
-            if ($this->Biditems->save($biditem)) {
-                //成功時のメッセージ
-                //$this->Flash->success('成功しました！');
-                $this->Flash->success(__('保存しました。'));
-                //$this->flash->set('saved');
-                //トップページ(index)に移動
-                return $this->redirect(['action' => 'index']);
+            $dirPath = WWW_ROOT . "img/";
+            $timeStamp = date("YmdHis");
+
+            // UploadedFile オブジェクトの配列を取得
+            $files = $this->request->getUploadedFiles();
+            // ファイルデータの読み込み
+            $fileName = $files['image']->getClientFileName();
+
+            //DB保存用の画像ファイル名を作成
+            $saveFileName = $timeStamp . '_' . $fileName;
+            //画像ファイルの移動先ディレクトリパスを作成
+            $targetPath = $dirPath . $saveFileName;
+
+            $connection = ConnectionManager::get('default');
+            // トランザクション開始
+            $connection->begin();
+            try {
+                if (empty($biditem->errors())) {
+                    // ファイルを移動
+                    $files['image']->moveTo($targetPath);
+
+                    //DB保存用の画像ファイル名をbiditemに反映
+                    $biditem['image'] = $saveFileName;
+
+                    //$biditemを保存する
+                    if ($this->Biditems->save($biditem)) {
+                        // コミット
+                        $connection->commit();
+                        //成功時のメッセージ
+                        $this->Flash->success(__('保存しました。'));
+                        //トップページ(index)に移動
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    //失敗時のメッセージ
+                    $this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
+                    throw new Exception('File Save Error.');
+                } else {
+                    $this->Flash->error(__('ファイルの保存に失敗しました'));
+                    throw new Exception('File Upload Error.');
+                }
+            } catch (Exception $e) {
+                //ロールバック
+                $connection->rollback();
             }
-            //失敗時のメッセージ
-            $this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
         }
+
         //値を保管
         $this->set(compact('biditem'));
     }
