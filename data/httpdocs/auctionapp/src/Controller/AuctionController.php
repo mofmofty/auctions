@@ -126,10 +126,8 @@ class AuctionController extends AuctionBaseController
                         $saveFileName = $timeStamp . '_' . $fileName;
                         //画像ファイルの移動先ディレクトリパスを作成
                         $targetPath = $dirPath . $saveFileName;
-
                         // ファイルを移動
                         $files['image']->moveTo($targetPath);
-
                         //DB保存用の画像ファイル名をbiditemに反映
                         $biditem['image'] = $saveFileName;
                     }
