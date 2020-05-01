@@ -22,7 +22,13 @@
     </tr>
     <tr>
         <th scope="row"></th>
-        <td><?= $this->Html->image($biditem->image, array('height' => 200, 'width' => 200, 'alt' => h($biditem->image))) ?></td>
+        <?php if (empty($biditem->image)) : ?>
+            <td>
+                <?= '※商品画像はありません' ?>
+            </td>
+        <?php else : ?>
+            <td><?= $this->Html->image($biditem->image, array('height' => 200, 'width' => 200, 'alt' => h($biditem->image))) ?></td>
+        <?php endif; ?>
     </tr>
     <tr>
         <th scope="row">終了時間</th>
@@ -44,7 +50,10 @@
 <div class="related">
     <h4><?= __('落札情報') ?>
     </h4>
-    <?php if (!empty($biditem->bidinfo)) : ?>
+    <?php if (empty($biditem->bidinfo->user->username)) : ?>
+        <p><?= '※落札情報は、ありません。' ?>
+        </p>
+    <?php elseif (!empty($biditem->bidinfo)) : ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col">落札者</th>

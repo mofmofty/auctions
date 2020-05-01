@@ -95,6 +95,7 @@ class BiditemsTable extends Table
 
         //画像ファイルアップロードのバリデーション
         $validator
+            ->allowEmptyFile('image')
             ->add('image', 'isImage', [
                 'provider' => 'customValidate',
                 'rule' => 'isImage',

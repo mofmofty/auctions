@@ -104,29 +104,35 @@ class AuctionController extends AuctionBaseController
 
             //$biditemにフォームの送信内容を反映
             $biditem = $this->Biditems->patchEntity($biditem, $this->request->getData());
-            $dirPath = WWW_ROOT . "img/";
-            $timeStamp = date("YmdHis");
 
-            // UploadedFile オブジェクトの配列を取得
-            $files = $this->request->getUploadedFiles();
-            // ファイルデータの読み込み
-            $fileName = $files['image']->getClientFileName();
-
-            //DB保存用の画像ファイル名を作成
-            $saveFileName = $timeStamp . '_' . $fileName;
-            //画像ファイルの移動先ディレクトリパスを作成
-            $targetPath = $dirPath . $saveFileName;
 
             $connection = ConnectionManager::get('default');
             // トランザクション開始
             $connection->begin();
             try {
                 if (empty($biditem->errors())) {
-                    // ファイルを移動
-                    $files['image']->moveTo($targetPath);
 
-                    //DB保存用の画像ファイル名をbiditemに反映
-                    $biditem['image'] = $saveFileName;
+                    $dirPath = WWW_ROOT . "img/";
+                    $timeStamp = date("YmdHis");
+
+                    // UploadedFile オブジェクトの配列を取得
+                    $files = $this->request->getUploadedFiles();
+                    // ファイルデータの読み込み
+                    $fileName = $files['image']->getClientFileName();
+
+                    //アップロードされた画像ファイルがある場合
+                    if (!empty($fileName)) {
+                        //DB保存用の画像ファイル名を作成
+                        $saveFileName = $timeStamp . '_' . $fileName;
+                        //画像ファイルの移動先ディレクトリパスを作成
+                        $targetPath = $dirPath . $saveFileName;
+
+                        // ファイルを移動
+                        $files['image']->moveTo($targetPath);
+
+                        //DB保存用の画像ファイル名をbiditemに反映
+                        $biditem['image'] = $saveFileName;
+                    }
 
                     //$biditemを保存する
                     if ($this->Biditems->save($biditem)) {

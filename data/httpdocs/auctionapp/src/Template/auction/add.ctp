@@ -9,7 +9,7 @@
     echo $this->Form->hidden('finished', ['value' => 0]);
     echo $this->Form->control('endtime');
     echo $this->Form->control('details'); //商品の詳細情報欄の追加
-    echo $this->Form->control('image', ['type' => 'file', 'label' => '商品画像を設定', 'required' => true,]); //画像ファイルのアップロード
+    echo $this->Form->control('image', ['type' => 'file', 'label' => '商品画像を設定']); //画像ファイルのアップロード
     ?>
 </fieldset>
 <?= $this->Form->button(__('Submit')) ?>
