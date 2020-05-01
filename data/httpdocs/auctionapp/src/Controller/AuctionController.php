@@ -90,8 +90,12 @@ class AuctionController extends AuctionBaseController
             'contain' => ['Users'],
             'order' => ['price' => 'desc']
         ])->toArray();
+
+        //タイマー用の残り時間をjavascriptに渡すための変数を定義
+        $bidendtime = $biditem->endtime;
+
         //オブジェクト類をテンプレートように設定
-        $this->set(compact('biditem', 'bidrequests'));
+        $this->set(compact('biditem', 'bidrequests', 'bidendtime'));
     }
 
     //出品する処理

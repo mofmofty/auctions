@@ -41,6 +41,14 @@
         </td>
     </tr>
     <tr>
+        <th scope="row">残り時間</th>
+        <td>
+            <div type="hidden" id="bidendtime" style="display:none;" data-val="<?= h($bidendtime) ?>"></div>
+            <?= $this->Html->script('timer') ?>
+            <div class="timer" id="timer"></div>
+        </td>
+    </tr>
+    <tr>
         <th scope="row"><?= __('終了した？') ?>
         </th>
         <td><?= $biditem->finished ? __('Yes') : __('No'); ?>
