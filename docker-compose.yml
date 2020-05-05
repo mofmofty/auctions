@@ -14,7 +14,7 @@ services:
     # Environment
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: sample
+      MYSQL_DATABASE: mydata
       MYSQL_USER: cakephp
       MYSQL_PASSWORD: password
       TZ: 'Asia/Tokyo'
