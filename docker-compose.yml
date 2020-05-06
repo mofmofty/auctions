@@ -7,7 +7,7 @@ services:
     # Dockerfile
     build: ./mysql
     # Image Name
-    # image: yoshi0518/cakephp-mysql:8.0.19
+    # image: cakephp-mysql:8.0.19
     image: cakephp-mysql:8.0.19
     # Container Name
     container_name: cakephp-mysql
@@ -34,7 +34,7 @@ services:
     # Dockerfile
     build: ./phpfpm
     # Image Name
-    # image: yoshi0518/cakephp-phpfpm:7.4.3
+    # image: cakephp-phpfpm:7.4.3
     image: cakephp-phpfpm:7.4.3
     # Container Name
     container_name: cakephp-phpfpm
@@ -59,7 +59,7 @@ services:
     # Dockerfile
     build: ./nginx
     # Image Name
-    # image: yoshi0518/cakephp-nginx:1.17.8
+    # image: cakephp-nginx:1.17.8
     image: cakephp-nginx:1.17.8
     # Container Name
     container_name: cakephp-nginx
@@ -88,7 +88,7 @@ services:
     # Dockerfile
     build: ./host
     # Image Name
-    # image: yoshi0518/cakephp-host:7.4.3
+    # image: cakephp-host:7.4.3
     image: cakephp-host:7.4.3
     # Container Name
     container_name: cakephp-host
@@ -119,7 +119,7 @@ services:
     # Dockerfile
     build: ./phpmyadmin
     # Image Name
-    # image: yoshi0518/cakephp-phpmyadmin:5.0.1
+    # image: cakephp-phpmyadmin:5.0.1
     image: cakephp-phpmyadmin:5.0.1
     # Container Name
     container_name: cakephp-phpmyadmin

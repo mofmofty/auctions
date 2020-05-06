@@ -35,14 +35,13 @@ $ docker-compose up -d
 # List containers and check start docker
 $ docker-compose ps
 
-# install Composer
+# Setup CakePHP
 $ docker-compose exec phpfpm /bin/ash
 $ cd /var/www/html/auctionapp
 $ composer install
-$ exit
+> Set Folder Permissions ? (Default to Y) [Y,n]? y
 
 # Applying Migrations
-$ docker-compose exec phpfpm /bin/ash
 $ cd /var/www/html/auctionapp
 $ bin/cake migrations migrate
 
