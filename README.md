@@ -35,6 +35,22 @@ $ docker-compose up -d
 # List containers and check start docker
 $ docker-compose ps
 
+# install Composer
+$ docker-compose exec phpfpm /bin/ash
+$ cd /var/www/html/auctionapp
+$ composer install
+$ exit
+
+# Applying Migrations
+$ docker-compose exec phpfpm /bin/ash
+$ cd /var/www/html/auctionapp
+$ bin/cake migrations migrate
+
+# Database Seeding
+$ cd /var/www/html/auctionapp
+$ bin/cake migrations seed
+$ exit
+
 # Open CakePHP in browser
 
 # Stop container
