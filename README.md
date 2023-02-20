@@ -1,4 +1,4 @@
-# Lesson6 mini-auctions
+# auctions
 
 ## Description
 Development of mini-auction site
